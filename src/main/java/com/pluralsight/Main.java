@@ -2,6 +2,8 @@ package com.pluralsight;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -17,6 +19,8 @@ public class Main {
         if (inventory.isEmpty()){
             System.out.println("\nEMPTY INVENTORY");
         }
+
+        inventory.sort(Comparator.comparing(Product::getName));
 
         for (Product p : inventory) {
             System.out.printf("id: %d %s - Price: $%.2f%n",
