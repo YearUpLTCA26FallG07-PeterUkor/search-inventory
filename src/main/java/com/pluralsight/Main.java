@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,36 +25,44 @@ public class Main {
     }
 
     public static ArrayList<Product> getInventory() {
-        Scanner input = new Scanner(System.in);
         ArrayList<Product> inventory = new ArrayList<Product>();
         // this method loads product objects into inventory
         // and its details are not shown
-        String choice;
-        int id;
-        String name;
-        double price;
-        while (true){
-            System.out.print("Would you like to add an item to the inventory (y/n): ");
-            choice = input.nextLine();
+        try{
+            FileReader fileReader = new FileReader("inventory.csv");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-            if (!choice.equalsIgnoreCase("y")){
-                System.out.println("\nThank you.");
-                break;
+            String line;
+            int id;
+            String name;
+            double price;
+            String[] parts;
+            while ((line = bufferedReader.readLine()) != null){
+                parts = line.split("\\|");
+
+                // handle inconsistent lines
+                if (parts.length != 3){
+                    System.out.println("Invalid item data");
+                    continue;
+                }
+
+                // handle invalid data types
+                try{
+                    id = Integer.parseInt(parts[0].trim());
+                    name = parts[1].trim();
+                    price = Double.parseDouble(parts[2].trim());
+                } catch (Exception e) {
+                    System.out.println("Invalid Input");
+                    continue;
+                }
+
+                Product product = new Product(id, name, price);
+
+                inventory.add(product);
+
             }
-            System.out.print("Enter Item ID: ");
-            id = input.nextInt();
-            input.nextLine();
 
-            System.out.print("Enter Item Name: ");
-            name = input.nextLine();
-
-            System.out.print("Enter Item price: ");
-            price = input.nextDouble();
-            input.nextLine();
-
-            Product product = new Product(id, name, price);
-
-            inventory.add(product);
+        } catch (IOException e) {
 
         }
 
