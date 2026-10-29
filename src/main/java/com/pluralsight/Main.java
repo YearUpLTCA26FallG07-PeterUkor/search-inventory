@@ -11,21 +11,13 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         ArrayList<Product> inventory = new ArrayList<Product>();
-        System.out.println("=== INVENTORY ===");
+
 
         inventory = getInventory();
 
-        System.out.println("\nWe carry the following inventory: ");
-        if (inventory.isEmpty()){
-            System.out.println("\nEMPTY INVENTORY");
-        }
+        displayInventory(inventory);
 
-        inventory.sort(Comparator.comparing(Product::getName));
 
-        for (Product p : inventory) {
-            System.out.printf("id: %d %s - Price: $%.2f%n",
-                    p.getId(), p.getName(), p.getPrice());
-        }
     }
 
     public static ArrayList<Product> getInventory() {
@@ -71,5 +63,21 @@ public class Main {
         }
 
         return inventory;
+    }
+
+    public static void displayInventory(ArrayList<Product> inventory){
+
+        System.out.println("=== INVENTORY ===");
+        System.out.println("We carry the following inventory: ");
+        if (inventory.isEmpty()){
+            System.out.println("\n!!! EMPTY INVENTORY !!!");
+        }
+
+        inventory.sort(Comparator.comparing(Product::getName));
+
+        for (Product p : inventory) {
+            System.out.printf("id: %d %s - Price: $%.2f%n",
+                    p.getId(), p.getName(), p.getPrice());
+        }
     }
 }
